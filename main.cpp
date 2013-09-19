@@ -5,6 +5,7 @@
 #include<iostream>
 #include <sstream>
 #include"helpf.h"
+#include"timer.h"
 
 using namespace std;
 
@@ -166,10 +167,14 @@ bool init()
 
 int main (int argc, char* args[])
 {
-    bool quit = false;
+    bool quit    = false;
     bool running = false;
     
-    Uint32 start =0;
+    Uint32 start    =0;
+    Uint32 ellapsed =0;
+    Uint32 pausedt  =0;
+
+    Timer clock;
 
     if(!init()) return 1;
 
@@ -184,27 +189,45 @@ int main (int argc, char* args[])
             {
                 if(event.key.keysym.sym == SDLK_s)
                 {
-                    if(running)
+                    if(clock.is_running())//if(running)
                     {
-                        running = false;
-                        start =0;
+                        clock.stop();
+                        //running = false;
+                        //start =0;
                     }
                     else
                     {
-                        running = true;
-                        start = SDL_GetTicks();
+                        clock.stop();
+                        clock.start();
+                        //running = true;
+                        //start = SDL_GetTicks();
+                    }
+                }
+                else if(event.key.keysym.sym == SDLK_p)
+                {
+                    if(clock.is_running())//if(running)
+                    {
+                        clock.pause();
+                        //running = false;
+                        //pausedt  = SDL_GetTicks();
+                    }
+                    else
+                    {
+                        clock.resume();
+                        //running   = true;
+                        //ellapsed += SDL_GetTicks() - pausedt; 
                     }
                 }
             }
                 
         }
-        if(running)
+        if(clock.is_running())
         {
             stringstream timer;
             SDL_Surface* seconds=nullptr;
             string time="";
 
-            timer <<  (SDL_GetTicks() -start)/1000 ;
+            timer << clock.get_ticks()/1000;  //(SDL_GetTicks() -start-ellapsed)/1000 ;
             timer >> time;
             
             apply_surface(background,screen,clip.x,clip.y,&clip);
