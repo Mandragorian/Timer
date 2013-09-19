@@ -1,5 +1,3 @@
-#include"SDL.h"
-#include<string>
 #include"SDL_image.h"
 #include"SDL_ttf.h"
 #include<iostream>
@@ -46,4 +44,39 @@ SDL_Rect set_clip(int x,int y, int w, int h)
     aux.h=h;
 
     return aux;
+}
+
+string formatted(int time)
+{
+    stringstream convert;
+    string aux;
+    string output="";
+    
+    int hundreds=0;
+    int seconds=0;
+    int minuites=0;
+    int hours=0;
+
+    hundreds = (time     / 10);
+    seconds =  (hundreds / 100);
+    minuites = (seconds  / 60);
+    hours    = (minuites / 60);
+
+    convert << hours%60 << " " << minuites%60 << " " << seconds%60 << " " << hundreds%100 ; //load numbers in the converter sstream;
+    convert >> aux; // get hours
+    output   += aux +":";
+    aux       = "";
+    convert >> aux; //get minuites
+    if(minuites>10) output  += aux+":";
+    else            output  += "0"+aux+":";
+    aux      = "";
+    convert >> aux; //get seconds
+    if(seconds>10) output  += aux+".";
+    else        output  += "0"+aux+".";
+    aux      = "";
+    convert >> aux; //get hundreds
+    if(hundreds%100 < 10) output +="0"+aux;
+    else                  output += aux;
+
+    return output;
 }

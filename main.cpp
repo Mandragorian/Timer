@@ -223,12 +223,14 @@ int main (int argc, char* args[])
         }
         if(clock.is_running())
         {
-            stringstream timer;
+            //stringstream timer;
             SDL_Surface* seconds=nullptr;
             string time="";
 
-            timer << clock.get_ticks()/1000;  //(SDL_GetTicks() -start-ellapsed)/1000 ;
-            timer >> time;
+            //timer << clock.get_ticks()/1000;  //(SDL_GetTicks() -start-ellapsed)/1000 ;
+            //timer >> time;
+
+            time = formatted(clock.get_ticks());
             
             apply_surface(background,screen,clip.x,clip.y,&clip);
 

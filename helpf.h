@@ -7,3 +7,4 @@ void apply_surface(SDL_Surface*, SDL_Surface*,int x=0 ,int y=0 ,SDL_Rect* clip=n
 
 SDL_Rect set_clip(int,int,int,int);
 
+std::string formatted(int);
