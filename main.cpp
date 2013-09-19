@@ -164,18 +164,6 @@ bool init()
     
 }
 
-//SDL_Rect set_clip(int x,int y, int w, int h)
-//{
-//    SDL_Rect aux;
-
-//    aux.x=x;
-//    aux.y=y;
-//    aux.w=w;
-//    aux.h=h;
-
-//    return aux;
-//}
-
 int main (int argc, char* args[])
 {
     bool quit = false;
