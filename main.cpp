@@ -237,9 +237,9 @@ int main (int argc, char* args[])
 
             seconds = TTF_RenderText_Solid(font, time.c_str(),textColour);
 
-            clip = set_clip((SCREEN_WIDTH -seconds->w)/2 ,50, seconds->w,seconds->h);
+            clip = set_clip(/*(SCREEN_WIDTH -seconds->w)/2*/time.size()*26 ,50, seconds->w,seconds->h);
             
-            apply_surface(seconds,screen,(SCREEN_WIDTH - seconds->w)/2 , 50 );
+            apply_surface(seconds,screen,/*(SCREEN_WIDTH - seconds->w)/2*/time.size()*26 , 50 );
 
             SDL_FreeSurface(seconds);
 

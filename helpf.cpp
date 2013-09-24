@@ -67,11 +67,11 @@ string formatted(int time)
     output   += aux +":";
     aux       = "";
     convert >> aux; //get minuites
-    if(minuites%60>10) output  += aux+":";
+    if(minuites%60>=10) output  += aux+":";
     else            output  += "0"+aux+":";
     aux      = "";
     convert >> aux; //get seconds
-    if(seconds%60>10) output  += aux+".";
+    if(seconds%60>=10) output  += aux+".";
     else        output  += "0"+aux+".";
     aux      = "";
     convert >> aux; //get hundreds
