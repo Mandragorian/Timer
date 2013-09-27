@@ -7,18 +7,23 @@ using namespace std;
 
 SDL_Surface *load_image(string filename)
 {
-   SDL_Surface* loaded_img = nullptr;
-   SDL_Surface* opt_img    = nullptr;
+   	SDL_Surface* loaded_img = nullptr;
+   	SDL_Surface* opt_img    = nullptr;
+	
+	cout << "load_img will attempt to load an image\n";
+   	loaded_img= IMG_Load(filename.c_str());
+	
+	cout << "image loaded will start optimisation: load_image\n";
 
-   loaded_img= IMG_Load(filename.c_str());
-
-   if( loaded_img )
-   {
-       opt_img = SDL_DisplayFormat (loaded_img);
-       SDL_FreeSurface( loaded_img);
-   }
-
-   return opt_img;
+   	if( loaded_img )
+   	{
+    	cout << "starting optimisation: load_image\n";
+		opt_img = SDL_DisplayFormat (loaded_img);
+		cout << "got optimised img: load_image\n";
+    	SDL_FreeSurface( loaded_img);
+   	}
+   	cout << filename << " from load image\n";
+   	return opt_img;
 
 }
 

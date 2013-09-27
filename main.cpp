@@ -6,6 +6,7 @@
 #include <sstream>
 #include"helpf.h"
 #include"timer.h"
+#include"button.h"
 
 using namespace std;
 
@@ -28,6 +29,8 @@ SDL_Color textColour     = {255,255,255};
 
 SDL_Surface* load_image(string);
 void apply_surface(SDL_Surface*, SDL_Surface*,int,int,SDL_Rect*);
+
+Timer Clock;
 
 //class Button {
 //   
@@ -118,32 +121,7 @@ void apply_surface(SDL_Surface*, SDL_Surface*,int,int,SDL_Rect*);
 //}
 
 
-//SDL_Surface *load_image(string filename)
-//{
-//   SDL_Surface* loaded_img = nullptr;
-//   SDL_Surface* opt_img    = nullptr;
 
-//   loaded_img= IMG_Load(filename.c_str());
-
-//   if( loaded_img )
-//  {
-//       opt_img = SDL_DisplayFormat (loaded_img);
-//       SDL_FreeSurface( loaded_img);
-//   }
-
-//   return opt_img;
-
-//}
-
-//void apply_surface(SDL_Surface* source, SDL_Surface* destination,int x=0,int y=0, SDL_Rect* clip = nullptr)
-//{
-//    SDL_Rect offset;
-
-//    offset.x=x;
-//    offset.y=y;
-
-//    SDL_BlitSurface(source, clip,destination, &offset);
-//}
 
 bool init()
 {
@@ -155,7 +133,7 @@ bool init()
 
     if( TTF_Init() == -1) return false;
     
-    SDL_WM_SetCaption("Event test", nullptr);
+    SDL_WM_SetCaption("Time Tools", nullptr);
 
     font = TTF_OpenFont("Impact.ttf",20);
 
@@ -165,55 +143,63 @@ bool init()
     
 }
 
+void start_stop_timer()
+{
+	if(Clock.is_running()) Clock.stop();
+	else Clock.start();
+	//cout <<"start_stop called \n";
+}
 int main (int argc, char* args[])
 {
     bool quit    = false;
-    bool running = false;
+    //bool running = false;
     
-    Uint32 start    =0;
-    Uint32 ellapsed =0;
-    Uint32 pausedt  =0;
+    
 
-    Timer clock;
+    //Timer clock;
 
     if(!init()) return 1;
+   
+    Button start_stop((SCREEN_WIDTH-100)/2,SCREEN_HEIGHT-160,100,80,(string)"start_stop_button.png",&start_stop_timer,nullptr,nullptr,nullptr);//,nullptr,nullptr,nullptr);	
 
-    start = SDL_GetTicks();
-    
     while(!quit)
     {
-        while(SDL_PollEvent(&event))
+        //start_stop.show(screen);
+		
+		while(SDL_PollEvent(&event))
         {
-            if(event.type==SDL_QUIT) quit = true;
+            start_stop.handle_events(event);
+			
+			if(event.type==SDL_QUIT) quit = true;
             else if(event.type == SDL_KEYDOWN)
             {
                 if(event.key.keysym.sym == SDLK_s)
                 {
-                    if(clock.is_running())//if(running)
+                    if(Clock.is_running())//if(running)
                     {
-                        clock.stop();
+                        Clock.stop();
                         //running = false;
                         //start =0;
                     }
                     else
                     {
-                        clock.stop();
-                        clock.start();
+                        Clock.stop();
+                        Clock.start();
                         //running = true;
                         //start = SDL_GetTicks();
                     }
                 }
                 else if(event.key.keysym.sym == SDLK_p)
                 {
-                    if(clock.is_running())//if(running)
+                    if(Clock.is_running())//if(running)
                     {
-                        clock.pause();
+                        Clock.pause();
                         //running = false;
                         //pausedt  = SDL_GetTicks();
                     }
                     else
                     {
-                        clock.resume();
+                        Clock.resume();
                         //running   = true;
                         //ellapsed += SDL_GetTicks() - pausedt; 
                     }
@@ -221,7 +207,7 @@ int main (int argc, char* args[])
             }
                 
         }
-        if(clock.is_running())
+        if(Clock.is_running())
         {
             //stringstream timer;
             SDL_Surface* seconds=nullptr;
@@ -230,7 +216,7 @@ int main (int argc, char* args[])
             //timer << clock.get_ticks()/1000;  //(SDL_GetTicks() -start-ellapsed)/1000 ;
             //timer >> time;
 
-            time = formatted(clock.get_ticks());
+            time = formatted(Clock.get_ticks());
             
             apply_surface(background,screen,clip.x,clip.y,&clip);
 
@@ -243,11 +229,13 @@ int main (int argc, char* args[])
 
             SDL_FreeSurface(seconds);
 
-            SDL_Flip(screen);
-
-
+            //SDL_Flip(screen);
 
         }
+
+		start_stop.show(screen);
+
+		SDL_Flip(screen);
 
     }
 return 0;
