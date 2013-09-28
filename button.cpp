@@ -22,7 +22,7 @@ class Button {
 	SDL_Rect  clips[4];
     //the sprite sheet
     SDL_Surface* buttonSheet;
-
+    //the functions to be called at certain buton events
     void (*mouse_down)();
     void (*mouse_up)();
     void (*mouse_over)();   
@@ -104,14 +104,12 @@ void Button::handle_events(SDL_Event event)
         {
             clip = &clips[CLIP_MOUSEOVER];
             mouse_over();
-			//cout << "mouseover\n";
-        }
+		}
         else //mouseout
         {
             clip=&clips[CLIP_MOUSEOUT];
 			mouse_out();
-			//cout << "mouseout\n";
-        }
+		}
     }
 
     if(event.type == SDL_MOUSEBUTTONDOWN)
@@ -121,12 +119,11 @@ void Button::handle_events(SDL_Event event)
             x = event.button.x;
             y = event.button.y;
 
-           if( ( x > box.x ) && ( x < box.x + box.w ) && ( y > box.y ) && ( y < box.y + box.h ) ) //mousedown
+           	if( ( x > box.x ) && ( x < box.x + box.w ) && ( y > box.y ) && ( y < box.y + box.h ) ) //mousedown
             {
                 clip=&clips[CLIP_MOUSEDOWN];
 				mouse_down();
-				//cout << "mousedown\n";
-            }
+			}
         }
     }
     else
@@ -140,8 +137,7 @@ void Button::handle_events(SDL_Event event)
             {
                 clip=&clips[CLIP_MOUSEUP];
 				mouse_up();
-				//cout <<"mouseup\n";
-            }
+			}
         }
     }
 }
@@ -149,6 +145,4 @@ void Button::handle_events(SDL_Event event)
 void Button::show(SDL_Surface* screen)
 {
     apply_surface(buttonSheet,screen,box.x,box.y,clip);
-	//SDL_Flip(screen);
-}
-
+}	

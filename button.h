@@ -1,6 +1,7 @@
 #include"SDL.h"
 #include<string>
 
+#pragma once
 
 class Button {
    

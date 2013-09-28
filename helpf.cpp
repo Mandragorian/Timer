@@ -2,6 +2,7 @@
 #include"SDL_ttf.h"
 #include<iostream>
 #include <sstream>
+
 using namespace std;
 
 
@@ -10,7 +11,7 @@ SDL_Surface *load_image(string filename)
    	SDL_Surface* loaded_img = nullptr;
    	SDL_Surface* opt_img    = nullptr;
 	
-	cout << "load_img will attempt to load an image\n";
+	cout << "->load_img will attempt to load: "<<filename <<"\n";
    	loaded_img= IMG_Load(filename.c_str());
 	
 	cout << "image loaded will start optimisation: load_image\n";
@@ -22,7 +23,7 @@ SDL_Surface *load_image(string filename)
 		cout << "got optimised img: load_image\n";
     	SDL_FreeSurface( loaded_img);
    	}
-   	cout << filename << " from load image\n";
+   	cout << filename << " loaded from load image<-\n";
    	return opt_img;
 
 }
@@ -62,26 +63,30 @@ string formatted(int time)
     int minuites=0;
     int hours=0;
 
-    hundreds = (time     / 10);
+    hundreds = (time     / 10);  //calculate seconds minuites etc.
     seconds =  (hundreds / 100);
     minuites = (seconds  / 60);
     hours    = (minuites / 60);
 
     convert << hours%60 << " " << minuites%60 << " " << seconds%60 << " " << hundreds%100 ; //load numbers in the converter sstream;
-    convert >> aux; // get hours
+    
+	convert >> aux; // get hours
     output   += aux +":";
     aux       = "";
-    convert >> aux; //get minuites
+    //output now is h:
+	convert >> aux; //get minuites
     if(minuites%60>=10) output  += aux+":";
     else            output  += "0"+aux+":";
     aux      = "";
-    convert >> aux; //get seconds
+    //ouput now is h:mm:
+	convert >> aux; //get seconds
     if(seconds%60>=10) output  += aux+".";
     else        output  += "0"+aux+".";
     aux      = "";
-    convert >> aux; //get hundreds
+    //output now is h:mm:ss:
+	convert >> aux; //get hundreds
     if(hundreds%100 < 10) output +="0"+aux;
     else                  output += aux;
-
+    //output now is h:mm:ss.hundreds and is ready
     return output;
 }

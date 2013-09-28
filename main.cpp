@@ -32,97 +32,6 @@ void apply_surface(SDL_Surface*, SDL_Surface*,int,int,SDL_Rect*);
 
 Timer Clock;
 
-//class Button {
-//   
-//    private:
-//    //The attributes of the button
-//    SDL_Rect box;
-//    //The part of the button sprite sheet that will be shown
-//    SDL_Rect* clip;
-//    
-//    SDL_Surface* buttonSheet;    
-//    public:
-//    //Initialize the variables
-//    Button( int x, int y, int w, int h,string img);
-//                       
-    //Handles events and set the button's sprite region
-//    void handle_events();
-                            
-    //Shows the button on the screen
-//    void show();
-    
-//};
-
-//Button::Button(int x, int y, int w, int h,string img)
-//{
-//    box.x=x;
-//    box.y=y;
-//    box.w=w;
-//    box.h=h;
-
-//    clip =&clips[CLIP_MOUSEOUT];
-
-//    buttonSheet= load_image(img);
-//    if(buttonSheet) cout << "yay!\n";
-//}
-
-//void Button::handle_events()
-//{
-//    int x =0;
-//    int y =0;
-
-//    if(event.type == SDL_MOUSEMOTION)
-//    {
-//        x = event.motion.x;
-//        y = event.motion.y;
-
-//        if((x>box.x) && (x < box.x +box.w) && (y > box.y)&&(y<box.y+box.h))
-//        {
-//            clip = &clips[CLIP_MOUSEOVER];
-            //cout << "mouseover\n";
-//        }
-//        else
-//        {
-//            clip=&clips[CLIP_MOUSEOUT];
-//        }
-//    }
-
-//    if(event.type == SDL_MOUSEBUTTONDOWN)
-//    {
-//        if(event.button.button == SDL_BUTTON_LEFT)
-//        {
-//            x = event.button.x;
-//            y = event.button.y;
-
-//           if( ( x > box.x ) && ( x < box.x + box.w ) && ( y > box.y ) && ( y < box.y + box.h ) )
-//            {
-//                clip=&clips[CLIP_MOUSEDOWN];
-//            }
-//        }
-//    }
-//    else
-//    {
-//        if(event.button.button == SDL_BUTTON_LEFT)
-//        {
-//            x = event.button.x;
-//            y = event.button.y;
-
-//            if( ( x > box.x ) && ( x < box.x + box.w ) && ( y > box.y ) && ( y < box.y + box.h ) )
-//            {
-//                clip=&clips[CLIP_MOUSEUP];
-//            }
-//        }
-//    }
-//}
-
-//void Button::show()
-//{
-//    apply_surface(buttonSheet,screen,box.x,box.y,clip);
-//}
-
-
-
-
 bool init()
 {
     if( SDL_Init(SDL_INIT_EVERYTHING) == -1) return false;
@@ -160,7 +69,7 @@ int main (int argc, char* args[])
 
     if(!init()) return 1;
    
-    Button start_stop((SCREEN_WIDTH-100)/2,SCREEN_HEIGHT-160,100,80,(string)"start_stop_button.png",&start_stop_timer,nullptr,nullptr,nullptr);//,nullptr,nullptr,nullptr);	
+    Button start_stop((SCREEN_WIDTH-100)/2,SCREEN_HEIGHT-160,100,80,(string)"start_stop_button.png",start_stop_timer,nullptr,nullptr,nullptr);//,nullptr,nullptr,nullptr);	
 
     while(!quit)
     {
@@ -175,46 +84,26 @@ int main (int argc, char* args[])
             {
                 if(event.key.keysym.sym == SDLK_s)
                 {
-                    if(Clock.is_running())//if(running)
-                    {
-                        Clock.stop();
-                        //running = false;
-                        //start =0;
-                    }
-                    else
-                    {
-                        Clock.stop();
-                        Clock.start();
-                        //running = true;
-                        //start = SDL_GetTicks();
-                    }
+                    if(Clock.is_running())	
+						Clock.stop();
+                    else	
+						Clock.start();
+                         
                 }
                 else if(event.key.keysym.sym == SDLK_p)
                 {
-                    if(Clock.is_running())//if(running)
-                    {
-                        Clock.pause();
-                        //running = false;
-                        //pausedt  = SDL_GetTicks();
-                    }
+                    if(Clock.is_running())
+                    	Clock.pause();
                     else
-                    {
-                        Clock.resume();
-                        //running   = true;
-                        //ellapsed += SDL_GetTicks() - pausedt; 
-                    }
+                    	Clock.resume();
                 }
             }
                 
         }
-        if(Clock.is_running())
+        if(Clock.is_running()) //get and display time
         {
-            //stringstream timer;
             SDL_Surface* seconds=nullptr;
             string time="";
-
-            //timer << clock.get_ticks()/1000;  //(SDL_GetTicks() -start-ellapsed)/1000 ;
-            //timer >> time;
 
             time = formatted(Clock.get_ticks());
             
@@ -228,14 +117,11 @@ int main (int argc, char* args[])
             apply_surface(seconds,screen,/*(SCREEN_WIDTH - seconds->w)/2*/time.size()*26 , 50 );
 
             SDL_FreeSurface(seconds);
+		}
 
-            //SDL_Flip(screen);
+		start_stop.show(screen); //display start_stop button
 
-        }
-
-		start_stop.show(screen);
-
-		SDL_Flip(screen);
+		SDL_Flip(screen);  //update the screen
 
     }
 return 0;
